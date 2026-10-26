@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibnest Analytics - TikTok Liquid Glass</title>
-    <!-- Tailwind CSS cho bố cục nhanh và đẹp -->
+    <title>VibNest - Social & Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome cho biểu tượng icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Hiệu ứng kính lỏng (Liquid Glassmorphism) trên nền trắng tinh tế */
         .glass-card {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(16px);
@@ -27,153 +24,410 @@
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             color: #1e293b;
             font-family: system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
         }
+        /* Hiệu ứng trượt tab thông minh */
+        .tab-content {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(100%);
+        }
+        .tab-content.active {
+            opacity: 1;
+            pointer-events: auto;
+            position: relative;
+            transform: translateX(0);
+        }
+        .tab-content.exit-left {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        .tab-content.enter-right {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        /* Ẩn thanh cuộn nhưng vẫn scroll được */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="min-h-screen pb-24">
+<body class="min-h-screen pb-28 relative">
 
-    <!-- Header -->
+    <!-- Header Chung -->
     <header class="sticky top-0 z-50 glass-card px-6 py-4 flex justify-between items-center border-b border-gray-100">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-black to-slate-800 flex items-center justify-center text-white shadow-md">
                 <i class="fa-solid fa-bolt text-lg"></i>
             </div>
             <div>
-                <h1 class="font-bold text-lg tracking-tight">Vibnest</h1>
-                <p class="text-xs text-slate-400">TikTok Analytics</p>
+                <h1 class="font-bold text-lg tracking-tight" id="app-header-title">VibNest</h1>
+                <p class="text-xs text-slate-400">Khám phá & Kết nối</p>
             </div>
         </div>
-        <div id="auth-status-badge" class="px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
-            Chưa kết nối
+        <div id="global-auth-badge" onclick="openLoginModal()" class="px-3 py-1 rounded-full text-xs font-medium bg-black text-white cursor-pointer hover:bg-slate-800 transition">
+            Đăng nhập
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="max-w-md mx-auto p-4 space-y-6">
+    <!-- Main Container Chứa 4 Tab -->
+    <main class="max-w-md mx-auto p-4 relative min-h-[75vh]">
 
-        <!-- TAB 1: HOME -->
-        <section id="tab-home" class="tab-content space-y-4">
-            <div class="glass-card rounded-3xl p-6 relative overflow-hidden">
-                <div class="absolute -right-10 -top-10 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl"></div>
-                <h2 class="text-sm font-medium text-slate-500 mb-1">Tổng quan kênh</h2>
-                <div class="text-3xl font-extrabold text-slate-900 mb-4" id="stat-followers">0</div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white/60 p-3 rounded-2xl border border-white">
-                        <span class="text-xs text-slate-400 block">Tổng lượt thích</span>
-                        <span class="text-lg font-bold text-slate-800" id="stat-likes">0</span>
+        <!-- TAB 1: TRANG CHỦ (Xem & Đăng Video tự thiết kế) -->
+        <section id="tab-1" class="tab-content active space-y-4">
+            <!-- Nút đăng video -->
+            <div class="glass-card rounded-3xl p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600">
+                        <i class="fa-solid fa-video"></i>
                     </div>
-                    <div class="bg-white/60 p-3 rounded-2xl border border-white">
-                        <span class="text-xs text-slate-400 block">Tổng lượt xem</span>
-                        <span class="text-lg font-bold text-slate-800" id="stat-views">0</span>
+                    <div>
+                        <h3 class="font-bold text-sm">Bạn đang nghĩ gì?</h3>
+                        <p class="text-xs text-slate-400">Đăng video giải trí của riêng bạn</p>
+                    </div>
+                </div>
+                <button onclick="alert('Mở camera/thư viện để đăng video!')" class="px-4 py-2 bg-black text-white text-xs font-medium rounded-xl shadow-md hover:bg-slate-800">
+                    Đăng video
+                </button>
+            </div>
+
+            <!-- Feed Video -->
+            <div class="space-y-4">
+                <div class="glass-card rounded-3xl overflow-hidden shadow-sm">
+                    <div class="p-4 flex items-center justify-between border-b border-slate-100">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-slate-300"></div>
+                            <span class="font-bold text-sm">Chinh Ly</span>
+                        </div>
+                        <i class="fa-solid fa-ellipsis text-slate-400"></i>
+                    </div>
+                    <div class="h-64 bg-slate-900 flex items-center justify-center text-white relative">
+                        <i class="fa-solid fa-play text-3xl opacity-80"></i>
+                        <span class="absolute bottom-3 left-3 text-xs bg-black/50 px-2 py-1 rounded-lg backdrop-blur-md">Video giải trí VibNest #1</span>
+                    </div>
+                    <div class="p-4 flex items-center justify-between text-slate-600 text-sm">
+                        <button class="flex items-center space-x-1 hover:text-pink-600"><i class="fa-regular fa-heart text-lg"></i> <span>1.2K</span></button>
+                        <button class="flex items-center space-x-1 hover:text-blue-600"><i class="fa-regular fa-comment text-lg"></i> <span>84</span></button>
+                        <button class="flex items-center space-x-1"><i class="fa-solid fa-share text-lg"></i> <span>Chia sẻ</span></button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 2: ANALYTICS -->
-        <section id="tab-analytics" class="tab-content hidden space-y-4">
+        <!-- TAB 2: BẠN BÈ (Danh sách bạn bè) -->
+        <section id="tab-2" class="tab-content space-y-4">
             <div class="glass-card rounded-3xl p-6">
-                <h2 class="font-bold text-base mb-4 flex items-center justify-between">
-                    <span>Hiệu suất Video</span>
-                    <i class="fa-solid fa-chart-line text-slate-400"></i>
-                </h2>
-                <div class="text-center py-10 text-slate-400 text-sm">
-                    Chưa có dữ liệu phân tích chi tiết.<br>Vui lòng đăng nhập ở mục Cài đặt để đồng bộ.
+                <h2 class="font-bold text-base mb-4">Bạn bè của bạn</h2>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-2 hover:bg-white/50 rounded-2xl transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-full bg-slate-300 relative">
+                                <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">Nguyễn Văn A</h4>
+                                <p class="text-xs text-slate-400">Đang hoạt động</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab(3)" class="px-3 py-1.5 bg-slate-100 hover:bg-black hover:text-white text-xs font-medium rounded-xl transition">Nhắn tin</button>
+                    </div>
+                    <div class="flex items-center justify-between p-2 hover:bg-white/50 rounded-2xl transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-full bg-slate-300 relative"></div>
+                            <div>
+                                <h4 class="font-bold text-sm">Trần Thị B</h4>
+                                <p class="text-xs text-slate-400">Hoạt động 2 giờ trước</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab(3)" class="px-3 py-1.5 bg-slate-100 hover:bg-black hover:text-white text-xs font-medium rounded-xl transition">Nhắn tin</button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 3: AI ASSISTANT -->
-        <section id="tab-ai" class="tab-content hidden space-y-4">
-            <div class="glass-card rounded-3xl p-6 flex flex-col h-[65vh]">
-                <h2 class="font-bold text-base mb-3 flex items-center space-x-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i>
-                    <span>Vibnest AI Advisor</span>
-                </h2>
-                <div class="flex-1 bg-white/50 rounded-2xl p-4 overflow-y-auto text-sm text-slate-600 border border-slate-100 mb-3">
-                    Xin chào! Tôi là trợ lý AI của bạn. Hãy kết nối tài khoản TikTok để tôi phân tích xu hướng video giúp bạn nhé.
+        <!-- TAB 3: CHAT (Bong bóng chat & Khung chat chi tiết) -->
+        <section id="tab-3" class="tab-content space-y-4">
+            <!-- Danh sách bong bóng chat -->
+            <div id="chat-list-view" class="space-y-3">
+                <h2 class="font-bold text-base px-2">Tin nhắn</h2>
+                <div onclick="openChatRoom('Nguyễn Văn A')" class="glass-card rounded-2xl p-3 flex items-center space-x-3 cursor-pointer hover:bg-white transition">
+                    <div class="w-12 h-12 rounded-full bg-slate-300 relative flex-shrink-0">
+                        <span class="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 border-2 border-white rounded-full"></span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="font-bold text-sm truncate">Nguyễn Văn A</h4>
+                            <span class="text-[10px] text-slate-400">12:30</span>
+                        </div>
+                        <p class="text-xs text-slate-500 truncate">Ê mai đi cà phê không ông ơi?</p>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <input type="text" placeholder="Nhập câu hỏi hoặc nói..." class="flex-1 bg-white/80 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/5">
-                    <button class="w-12 h-12 bg-black text-white rounded-2xl flex items-center justify-center shadow-lg hover:bg-slate-800 transition">
-                        <i class="fa-solid fa-paper-plane"></i>
+            </div>
+
+            <!-- Giao diện Khung chat chi tiết (Ẩn mặc định, bấm vào bong bóng mới hiện) -->
+            <div id="chat-room-view" class="hidden glass-card rounded-3xl p-4 flex flex-col h-[70vh]">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                    <button onclick="closeChatRoom()" class="text-sm font-medium text-slate-600 flex items-center space-x-1">
+                        <i class="fa-solid fa-arrow-left"></i> <span>Quay lại</span>
                     </button>
+                    <h3 id="chat-room-name" class="font-bold text-sm">Nguyễn Văn A</h3>
+                    <i class="fa-solid fa-phone text-slate-600"></i>
+                </div>
+                <!-- Nội dung tin nhắn -->
+                <div class="flex-1 overflow-y-auto space-y-3 p-2 text-sm">
+                    <div class="flex justify-start">
+                        <div class="bg-white p-3 rounded-2xl rounded-bl-none shadow-sm max-w-[75%]">Ê mai đi cà phê không ông ơi?</div>
+                    </div>
+                    <div class="flex justify-end">
+                        <div class="bg-black text-white p-3 rounded-2xl rounded-br-none shadow-sm max-w-[75%]">Đi chứ, mấy giờ thế bro?</div>
+                    </div>
+                </div>
+                <!-- Thanh nhập tin nhắn kèm nút dấu cộng -->
+                <div class="relative pt-2">
+                    <!-- Menu dấu cộng mở rộng (Ảnh & video, tệp) -->
+                    <div id="chat-plus-menu" class="hidden absolute bottom-16 left-0 glass-card p-3 rounded-2xl shadow-xl flex space-x-4">
+                        <button onclick="alert('Gửi Ảnh & Video')" class="flex flex-col items-center text-xs space-y-1"><i class="fa-solid fa-image text-pink-600 text-lg"></i><span>Ảnh & Video</span></button>
+                        <button onclick="alert('Gửi Tệp')" class="flex flex-col items-center text-xs space-y-1"><i class="fa-solid fa-file text-blue-600 text-lg"></i><span>Tệp</span></button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="toggleChatPlusMenu()" class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 hover:bg-slate-300 transition">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <input type="text" placeholder="Nhập tin nhắn..." class="flex-1 bg-white/80 border border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none">
+                        <button class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 4: MESSAGES -->
-        <section id="tab-messages" class="tab-content hidden space-y-4">
-            <div class="glass-card rounded-3xl p-6">
-                <h2 class="font-bold text-base mb-4">Tin nhắn & Tương tác</h2>
-                <div class="text-center py-10 text-slate-400 text-sm">
-                    Không có thông báo mới.
+        <!-- TAB 4: CÀI ĐẶT (Đầy đủ cấu hình chi tiết) -->
+        <section id="tab-4" class="tab-content space-y-4 pb-12">
+            
+            <!-- 1. Tài khoản -->
+            <div class="glass-card rounded-3xl p-5 space-y-3">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center space-x-2"><i class="fa-solid fa-user text-slate-600"></i><span>1. Tài khoản</span></h3>
+                <div class="bg-white/60 p-3 rounded-2xl border border-white space-y-1">
+                    <p class="text-xs text-slate-400">Tên người dùng:</p>
+                    <p class="text-sm font-bold" id="setting-username">Chinh Ly (Chưa đăng nhập)</p>
+                    <p class="text-xs text-slate-400 mt-2">Thông tin TikTok:</p>
+                    <p class="text-xs text-slate-600" id="setting-tiktok-info">Chưa đồng bộ số liệu</p>
+                </div>
+                <button onclick="openLoginModal()" class="w-full py-2.5 bg-black text-white text-xs font-medium rounded-xl hover:bg-slate-800 transition">Đăng xuất / Chuyển tài khoản</button>
+            </div>
+
+            <!-- 2. Riêng tư & Bảo mật -->
+            <div class="glass-card rounded-3xl p-5 space-y-3">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center space-x-2"><i class="fa-solid fa-lock text-slate-600"></i><span>2. Riêng tư & Bảo mật</span></h3>
+                <div class="flex items-center justify-between text-xs py-1">
+                    <span>Tài khoản riêng tư</span>
+                    <input type="checkbox" class="toggle">
+                </div>
+                <div class="flex items-center justify-between text-xs py-1">
+                    <span>Cho phép người khác tìm thấy</span>
+                    <input type="checkbox" checked class="toggle">
                 </div>
             </div>
-        </section>
 
-        <!-- TAB 5: SETTINGS (Nơi chứa nút chuyển hướng đăng nhập TikTok) -->
-        <section id="tab-settings" class="tab-content hidden space-y-4">
-            <div class="glass-card rounded-3xl p-6 space-y-4">
-                <h2 class="font-bold text-base mb-2">Cài đặt tài khoản</h2>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Kết nối tài khoản TikTok của bạn để đồng bộ toàn bộ số liệu thời gian thực lên hệ thống Vibnest.
-                </p>
-                <!-- Nút bấm chuyển hướng sang trang TikTok Auth -->
-                <a href="https://www.tiktok.com/v2/auth/authorize/" target="_blank" onclick="simulateTikTokLogin(event)"
-                   class="w-full py-3.5 px-4 bg-black text-white rounded-2xl font-medium text-sm flex items-center justify-center space-x-2 shadow-lg hover:bg-slate-800 transition">
-                    <i class="fa-brands fa-tiktok text-lg"></i>
-                    <span>Đăng nhập với TikTok</span>
+            <!-- 3. Thông báo -->
+            <div class="glass-card rounded-3xl p-5 space-y-3">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center space-x-2"><i class="fa-solid fa-bell text-slate-600"></i><span>3. Thông báo</span></h3>
+                <div class="space-y-2 text-xs">
+                    <label class="flex items-center space-x-2"><input type="checkbox" checked> <span>Chat cá nhân</span></label>
+                    <label class="flex items-center space-x-2"><input type="checkbox" checked> <span>Nhóm</span></label>
+                    <label class="flex items-center space-x-2"><input type="checkbox" checked> <span>Video mới</span></label>
+                    <label class="flex items-center space-x-2"><input type="checkbox" checked> <span>Tim và biểu tượng cảm xúc</span></label>
+                    <hr class="border-slate-100 my-1">
+                    <label class="flex items-center space-x-2"><input type="checkbox" checked> <span>Hiển thị nội dung thông báo</span></label>
+                    <label class="flex items-center space-x-2"><input type="checkbox" checked> <span>Âm báo khi chat</span></label>
+                </div>
+            </div>
+
+            <!-- 4. Tiết kiệm pin -->
+            <div class="glass-card rounded-3xl p-5 space-y-3">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center space-x-2"><i class="fa-solid fa-battery-half text-slate-600"></i><span>4. Tiết kiệm pin</span></h3>
+                <div class="flex items-center justify-between text-xs">
+                    <span>Giao diện nền trắng / nền đen</span>
+                    <button onclick="toggleDarkMode()" class="px-3 py-1 bg-slate-200 rounded-xl font-medium">Chuyển chế độ</button>
+                </div>
+            </div>
+
+            <!-- 5. Ngôn ngữ -->
+            <div class="glass-card rounded-3xl p-5 space-y-3">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center space-x-2"><i class="fa-solid fa-globe text-slate-600"></i><span>5. Ngôn ngữ</span></h3>
+                <div class="space-y-2 text-xs">
+                    <label class="flex items-center space-x-2"><input type="checkbox" checked> <span>Hiển thị nút dịch</span></label>
+                    <label class="flex items-center space-x-2"><input type="checkbox" checked> <span>Dịch toàn bộ chat tự động</span></label>
+                    <div class="pt-2">
+                        <span class="text-slate-400 block mb-1">Chọn ngôn ngữ:</span>
+                        <select class="w-full bg-white/80 border border-slate-200 rounded-xl p-2 text-xs">
+                            <option>Tiếng Việt</option>
+                            <option>Tiếng Trung (Giản thể)</option>
+                            <option>Tiếng Trung (Phồn thể)</option>
+                            <option>Tiếng Anh</option>
+                            <option>Tiếng Nhật</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. VibNest Pro -->
+            <div class="glass-card rounded-3xl p-5 space-y-3 bg-gradient-to-br from-purple-500/10 to-pink-500/10">
+                <h3 class="font-bold text-sm text-purple-900 flex items-center space-x-2"><i class="fa-solid fa-crown text-purple-600"></i><span>6. VibNest Pro</span></h3>
+                <div class="grid grid-cols-2 gap-2 text-center">
+                    <div class="bg-white/80 p-3 rounded-2xl border border-purple-100">
+                        <p class="text-xs text-slate-500">Gói 1 tháng</p>
+                        <p class="font-extrabold text-sm text-purple-600">50.000 đ</p>
+                    </div>
+                    <div class="bg-white/80 p-3 rounded-2xl border border-purple-100">
+                        <p class="text-xs text-slate-500">Gói 1 năm</p>
+                        <p class="font-extrabold text-sm text-purple-600">200.000 đ</p>
+                    </div>
+                </div>
+                <button onclick="alert('Đăng ký gói Pro thành công!')" class="w-full py-2 bg-purple-600 text-white text-xs font-medium rounded-xl shadow-md">Nâng cấp ngay</button>
+            </div>
+
+            <!-- 7. Tính năng VibNest -->
+            <div class="glass-card rounded-3xl p-5 space-y-2">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center space-x-2"><i class="fa-solid fa-star text-slate-600"></i><span>7. Tính năng VibNest</span></h3>
+                <a href="https://www.tiktok.com/@tyty_99_0" target="_blank" class="block text-xs text-blue-600 hover:underline">
+                    👉 Ghé thăm TikTok chính thức của tôi: <b>tyty_99_0</b>
                 </a>
             </div>
+
+            <!-- 8. Chính sách quyền riêng tư -->
+            <div class="glass-card rounded-3xl p-5 space-y-2">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center space-x-2"><i class="fa-solid fa-shield-halved text-slate-600"></i><span>8. Chính sách quyền riêng tư</span></h3>
+                <p class="text-[11px] text-slate-500 leading-relaxed">
+                    VibNest cam kết bảo vệ tuyệt đối thông tin cá nhân của bạn. Dữ liệu thu thập từ TikTok API chỉ dùng để phân tích hiển thị cá nhân và không chia sẻ cho bên thứ ba. Mọi quyền lợi người dùng được đảm bảo theo tiêu chuẩn quốc tế.
+                </p>
+            </div>
+
+            <!-- Phiên bản ứng dụng dưới cùng -->
+            <div class="text-center text-xs text-slate-400 pt-2">
+                VibNest Analytics v2.5.0 (Build 2026)
+            </div>
+
         </section>
 
     </main>
 
-    <!-- Floating Glass Navigation Bar (5 Tabs) -->
-    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-nav px-4 py-2.5 rounded-full shadow-2xl flex items-center space-x-3 z-50 border border-white/80">
-        <button onclick="switchTab('home')" class="nav-btn w-11 h-11 rounded-full flex items-center justify-center text-black bg-slate-100 transition shadow-sm" data-target="home">
-            <i class="fa-solid fa-house text-sm"></i>
+    <!-- Modal Đăng nhập (TikTok hoặc Google) -->
+              </button>
+        </div>
+    </div>
+
+    <!-- Thanh Navigation Nổi 4 Tab -->
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-nav px-5 py-2.5 rounded-full shadow-2xl flex items-center space-x-6 z-40 border border-white/80">
+        <button onclick="switchTab(1)" class="nav-btn flex flex-col items-center text-black transition" data-tab="1">
+            <i class="fa-solid fa-house text-base"></i>
+            <span class="text-[10px] mt-0.5 font-medium">Trang chủ</span>
         </button>
-        <button onclick="switchTab('analytics')" class="nav-btn w-11 h-11 rounded-full flex items-center justify-center text-slate-400 hover:text-black transition" data-target="analytics">
-            <i class="fa-solid fa-chart-simple text-sm"></i>
+        <button onclick="switchTab(2)" class="nav-btn flex flex-col items-center text-slate-400 hover:text-black transition" data-tab="2">
+            <i class="fa-solid fa-user-group text-base"></i>
+            <span class="text-[10px] mt-0.5 font-medium">Bạn bè</span>
         </button>
-        <button onclick="switchTab('ai')" class="nav-btn w-11 h-11 rounded-full flex items-center justify-center text-slate-400 hover:text-black transition" data-target="ai">
-            <i class="fa-solid fa-brain text-sm"></i>
+        <button onclick="switchTab(3)" class="nav-btn flex flex-col items-center text-slate-400 hover:text-black transition" data-tab="3">
+            <i class="fa-solid fa-message text-base"></i>
+            <span class="text-[10px] mt-0.5 font-medium">Chat</span>
         </button>
-        <button onclick="switchTab('messages')" class="nav-btn w-11 h-11 rounded-full flex items-center justify-center text-slate-400 hover:text-black transition" data-target="messages">
-            <i class="fa-solid fa-message text-sm"></i>
-        </button>
-        <button onclick="switchTab('settings')" class="nav-btn w-11 h-11 rounded-full flex items-center justify-center text-slate-400 hover:text-black transition" data-target="settings">
-            <i class="fa-solid fa-gear text-sm"></i>
+        <button onclick="switchTab(4)" class="nav-btn flex flex-col items-center text-slate-400 hover:text-black transition" data-tab="4">
+            <i class="fa-solid fa-gear text-base"></i>
+            <span class="text-[10px] mt-0.5 font-medium">Cài đặt</span>
         </button>
     </nav>
 
-    <!-- JavaScript chuyển tab và giả lập bấm đăng nhập -->
+    <!-- JavaScript Xử lý Hiệu ứng chuyển tab & logic tương tác -->
     <script>
-        function switchTab(tabId) {
-            // Ẩn tất cả các tab
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            // Hiển thị tab được chọn
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
+        let currentTab = 1;
 
-            // Cập nhật trạng thái icon active trên thanh navigation
+        function switchTab(targetTab) {
+            if (targetTab === currentTab) return;
+
+            const tabs = document.querySelectorAll('.tab-content');
+            const currentEl = document.getElementById(`tab-${currentTab}`);
+            const targetEl = document.getElementById(`tab-${targetTab}`);
+
+            // Xác định hướng chuyển động: 
+            // Nếu số tab mục tiêu lớn hơn tab hiện tại -> trượt từ phải sang trái
+            // Nếu nhỏ hơn -> trượt từ trái sang phải
+            if (targetTab > currentTab) {
+                currentEl.classList.add('exit-left');
+                targetEl.classList.remove('exit-left', 'enter-right');
+            } else {
+                currentEl.classList.add('enter-right');
+                targetEl.classList.remove('exit-left', 'enter-right');
+            }
+
+            currentEl.classList.remove('active');
+            
+            setTimeout(() => {
+                currentEl.classList.remove('exit-left', 'enter-right');
+                targetEl.classList.add('active');
+            }, 50);
+
+            // Cập nhật icon active trên thanh navigation
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-black', 'bg-slate-100', 'shadow-sm');
-                btn.classList.add('text-slate-400');
-                if(btn.getAttribute('data-target') === tabId) {
+                const t = parseInt(btn.getAttribute('data-tab'));
+                if (t === targetTab) {
                     btn.classList.remove('text-slate-400');
-                    btn.classList.add('text-black', 'bg-slate-100', 'shadow-sm');
+                    btn.classList.add('text-black');
+                } else {
+                    btn.classList.remove('text-black');
+                    btn.classList.add('text-slate-400');
                 }
             });
+
+            currentTab = targetTab;
         }
 
-        function simulateTikTokLogin(e) {
-            // Khi người dùng bấm vào nút đăng nhập TikTok, hệ thống sẽ mở link sang cổng TikTok
-            // (Sau này khi có Client Key, ta sẽ trỏ link này về endpoint OAuth FastAPI trên Render của bạn)
-            console.log("Đang chuyển hướng sang TikTok OAuth...");
+        // Xử lý mở/đóng khung chat chi tiết trong Tab 3
+        function openChatRoom(name) {
+            document.getElementById('chat-list-view').classList.add('hidden');
+            document.getElementById('chat-room-view').classList.remove('hidden');
+            document.getElementById('chat-room-name').innerText = name;
+        }
+
+        function closeChatRoom() {
+            document.getElementById('chat-room-view').classList.add('hidden');
+            document.getElementById('chat-list-view').classList.remove('hidden');
+        }
+
+        function toggleChatPlusMenu() {
+            const menu = document.getElementById('chat-plus-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Modal đăng nhập
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function loginWithTikTok() {
+            closeLoginModal();
+            alert('Đang chuyển hướng sang cổng xác thực TikTok OAuth chính thức...');
+            document.getElementById('setting-username').innerText = 'Chinh Ly (TikTok Verified)';
+            document.getElementById('setting-tiktok-info').innerText = 'Đã kết nối API: 15.4K Follows, 230K Likes';
+            document.getElementById('global-auth-badge').innerText = 'Đã kết nối TikTok';
+        }
+
+        function loginWithGoogle() {
+            closeLoginModal();
+            alert('Đăng nhập Google thành công (Phần phụ trợ tài khoản cá nhân).');
+            document.getElementById('setting-username').innerText = 'Chinh Ly (Google Account)';
+            document.getElementById('global-auth-badge').innerText = 'Đã kết nối Google';
+        }
+
+        function toggleDarkMode() {
+            alert('Chuyển đổi giao diện Sáng / Tối linh hoạt!');
         }
     </script>
 </body>
-  </html>
-  
+</html>
