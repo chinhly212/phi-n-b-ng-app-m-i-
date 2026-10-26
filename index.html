@@ -184,16 +184,16 @@
                     <div class="flex items-center space-x-3"><i class="fa-solid fa-shield-halved text-slate-600"></i><span class="font-bold text-sm">8. Chính sách quyền riêng tư</span></div>
                     <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </div>
-                <div class="text-center text-xs text-slate-400 pt-4">VibNest Analytics v2.6.0</div>
+                <div class="text-center text-xs text-slate-400 pt-4">VibNest Analytics v2.7.0</div>
             </div>
 
-            <!-- SUB 1: TÀI KHOẢN (Chứa Đăng nhập / Đăng ký / Thông tin cá nhân) -->
+            <!-- SUB 1: TÀI KHOẢN -->
             <div id="sub-account" class="settings-subpage space-y-4">
                 <button onclick="closeSettingsSub()" class="text-xs font-bold text-slate-600 flex items-center space-x-1 mb-2">
                     <i class="fa-solid fa-arrow-left"></i> <span>Quay lại cài đặt</span>
                 </button>
 
-                <!-- Chưa đăng nhập: Hiện nút Đăng nhập / Đăng ký -->
+                <!-- Chưa đăng nhập -->
                 <div id="account-guest-view" class="glass-card rounded-3xl p-5 space-y-4 text-center">
                     <div class="w-16 h-16 bg-slate-200 rounded-full mx-auto flex items-center justify-center text-slate-400 text-2xl">
                         <i class="fa-solid fa-user"></i>
@@ -206,7 +206,7 @@
                     </div>
                 </div>
 
-                <!-- Đã đăng nhập: Hiện thông tin & cho đổi ảnh đại diện -->
+                <!-- Đã đăng nhập -->
                 <div id="account-logged-view" class="hidden glass-card rounded-3xl p-5 space-y-4">
                     <div class="flex items-center space-x-4 border-b border-slate-100 pb-4">
                         <div class="relative group cursor-pointer" onclick="document.getElementById('avatar-file-input').click()">
@@ -228,14 +228,10 @@
                 </div>
             </div>
 
-            <!-- Các Sub khác của Cài đặt giữ nguyên -->
+            <!-- Các Sub khác -->
             <div id="sub-privacy" class="settings-subpage space-y-4">
                 <button onclick="closeSettingsSub()" class="text-xs font-bold text-slate-600 flex items-center space-x-1 mb-2"><i class="fa-solid fa-arrow-left"></i> <span>Quay lại cài đặt</span></button>
-                <div class="glass-card rounded-3xl p-5 space-y-3">
-                    <h3 class="font-bold text-base">Riêng tư & Bảo mật</h3>
-                    <div class="flex items-center justify-between text-xs py-2"><span>Tài khoản riêng tư</span><input type="checkbox" class="toggle"></div>
-                    <div class="flex items-center justify-between text-xs py-2"><span>Cho phép người khác tìm thấy</span><input type="checkbox" checked class="toggle"></div>
-                </div>
+                <div class="glass-card rounded-3xl p-5 space-y-3"><h3 class="font-bold text-base">Riêng tư & Bảo mật</h3></div>
             </div>
             <div id="sub-notification" class="settings-subpage space-y-4">
                 <button onclick="closeSettingsSub()" class="text-xs font-bold text-slate-600 flex items-center space-x-1 mb-2"><i class="fa-solid fa-arrow-left"></i> <span>Quay lại cài đặt</span></button>
@@ -264,10 +260,9 @@
 
         </section>
 
-    </main>
-
-    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ (Trang phụ lật qua lại) -->
- <div id="auth-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            </main>
+                <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="glass-card rounded-3xl p-6 w-full max-w-sm space-y-4 bg-white/95 relative">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-black"><i class="fa-solid fa-xmark text-lg"></i></button>
 
@@ -301,7 +296,7 @@
                 </div>
             </div>
 
-            <!-- 3. Form nhập thông tin sau khi chọn Đăng ký Google -->
+            <!-- 3. Form nhập thông tin Google -->
             <div id="auth-google-form-view" class="auth-view space-y-3">
                 <h3 class="font-bold text-base">Hoàn tất thông tin Google</h3>
                 <div class="space-y-2 text-xs">
@@ -323,23 +318,19 @@
         </div>
     </div>
 
-    <!-- Thanh Navigation Nổi 4 Tab Chuẩn Khớp Màn Hình -->
-    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-nav px-6 py-2.5 rounded-full shadow-2xl flex items-center space-x-8 z-40 border border-white/80">
-        <button onclick="switchTab(1)" class="nav-btn flex flex-col items-center text-black transition" data-tab="1">
-            <i class="fa-solid fa-house text-base"></i>
-            <span class="text-[10px] mt-0.5 font-medium">Trang chủ</span>
+    <!-- Thanh Navigation Nổi (Chỉ hiện Icon phóng to, không có chữ) -->
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 glass-nav px-8 py-3.5 rounded-full shadow-2xl flex items-center justify-around w-[85%] max-w-xs z-40 border border-white/80">
+        <button onclick="switchTab(1)" class="nav-btn flex items-center justify-center text-black transition p-2" data-tab="1">
+            <i class="fa-solid fa-house text-xl"></i>
         </button>
-        <button onclick="switchTab(2)" class="nav-btn flex flex-col items-center text-slate-400 hover:text-black transition" data-tab="2">
-            <i class="fa-solid fa-user-group text-base"></i>
-            <span class="text-[10px] mt-0.5 font-medium">Bạn bè</span>
+        <button onclick="switchTab(2)" class="nav-btn flex items-center justify-center text-slate-400 hover:text-black transition p-2" data-tab="2">
+            <i class="fa-solid fa-user-group text-xl"></i>
         </button>
-        <button onclick="switchTab(3)" class="nav-btn flex flex-col items-center text-slate-400 hover:text-black transition" data-tab="3">
-            <i class="fa-solid fa-message text-base"></i>
-            <span class="text-[10px] mt-0.5 font-medium">Chat</span>
+        <button onclick="switchTab(3)" class="nav-btn flex items-center justify-center text-slate-400 hover:text-black transition p-2" data-tab="3">
+            <i class="fa-solid fa-message text-xl"></i>
         </button>
-        <button onclick="switchTab(4)" class="nav-btn flex flex-col items-center text-slate-400 hover:text-black transition" data-tab="4">
-            <i class="fa-solid fa-gear text-base"></i>
-            <span class="text-[10px] mt-0.5 font-medium">Cài đặt</span>
+        <button onclick="switchTab(4)" class="nav-btn flex items-center justify-center text-slate-400 hover:text-black transition p-2" data-tab="4">
+            <i class="fa-solid fa-gear text-xl"></i>
         </button>
     </nav>
         <script>
@@ -363,7 +354,6 @@
             currentTab = targetTab;
         }
 
-        // Cài đặt Sub-pages
         function openSettingsSub(subId) {
             document.querySelectorAll('.settings-subpage').forEach(el => el.classList.remove('active'));
             document.getElementById(subId).classList.add('active');
@@ -374,7 +364,6 @@
             document.getElementById('settings-main-menu').classList.add('active');
         }
 
-        // Modal Đăng nhập / Đăng ký
         function openAuthModal(mode) {
             document.getElementById('auth-modal').classList.remove('hidden');
             switchAuthMode(mode);
@@ -395,10 +384,8 @@
             }
         }
 
-        // Xử lý đăng nhập / đăng ký TikTok (Tự lấy thông tin)
         function authTikTok() {
             closeAuthModal();
-            // Giả lập lấy thông tin từ TikTok API
             const tiktokUser = {
                 name: "Chinh Ly (TikTok)",
                 id: "@tyty_99_0",
@@ -406,10 +393,9 @@
                 method: "TikTok OAuth"
             };
             updateUserSession(tiktokUser);
-            alert('Xác thực TikTok thành công! Đã đồng bộ thông tin.');
+            alert('Đăng nhập TikTok thành công! Đã đồng bộ thông tin.');
         }
 
-        // Xử lý Google
         function authGoogle(type) {
             if (type === 'login') {
                 closeAuthModal();
@@ -422,14 +408,13 @@
                 updateUserSession(googleUser);
                 alert('Đăng nhập Google thành công!');
             } else {
-                // Chuyển sang form nhập thông tin khi đăng ký Google
                 switchAuthMode('google-form');
             }
         }
 
         function completeGoogleRegister() {
             const name = document.getElementById('reg-name').value || "Người dùng Google";
-            const id = document.getElementById('reg-id').value || "@user_google";
+            let id = document.getElementById('reg-id').value || "@user_google";
             if (!id.startsWith('@')) { id = '@' + id; }
 
             const newUser = {
@@ -440,10 +425,9 @@
             };
             closeAuthModal();
             updateUserSession(newUser);
-            alert('Đăng ký tài khoản Google thành công!');
+            alert('Đăng ký tài khoản thành công!');
         }
 
-        // Cập nhật giao diện khi đã đăng nhập
         function updateUserSession(user) {
             document.getElementById('account-guest-view').classList.add('hidden');
             document.getElementById('account-logged-view').classList.remove('hidden');
@@ -462,7 +446,6 @@
             alert('Đã đăng xuất tài khoản.');
         }
 
-        // Thay đổi ảnh đại diện trực tiếp trong app
         function handleAvatarChange(event) {
             const file = event.target.files[0];
             if (file) {
@@ -471,13 +454,12 @@
                     const newAvatarUrl = e.target.result;
                     document.getElementById('user-avatar').src = newAvatarUrl;
                     document.getElementById('feed-user-avatar').src = newAvatarUrl;
-                    alert('Đã cập nhật ảnh đại diện mới thành công!');
+                    alert('Đã cập nhật ảnh đại diện mới!');
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        // Chat & phụ trợ
         function openChatRoom(name) {
             document.getElementById('chat-list-view').classList.add('hidden');
             document.getElementById('chat-room-view').classList.remove('hidden');
