@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f9fc">
+<title>李文正 — Personal Hub</title>
+<style>
+:root{--ink:#182033;--muted:#81899a;--glass:rgba(255,255,255,.64);--line:rgba(255,255,255,.96);--shadow:0 16px 42px rgba(67,82,118,.10);--accent:#596be5}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:20px 15px 30px;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",sans-serif;background:radial-gradient(ellipse at 10% 7%,rgba(194,218,255,.58),transparent 35%),radial-gradient(ellipse at 90% 20%,rgba(238,211,255,.5),transparent 34%),radial-gradient(ellipse at 55% 95%,rgba(194,239,232,.48),transparent 38%),#f7f9fc}
+.shell{width:min(100%,700px);margin:auto}
+.hero{text-align:center;padding:17px 8px 22px}
+.avatar{width:68px;height:68px;margin:0 auto 13px;display:grid;place-items:center;border-radius:23px;color:white;font-size:29px;font-weight:800;background:linear-gradient(145deg,#a9baff,#7d8df3 58%,#b4a0f6);box-shadow:0 12px 28px #7180e52e}
+h1{font-size:clamp(30px,7vw,40px);letter-spacing:2px;margin:0;font-weight:780}
+.subtitle{color:var(--muted);font-size:13px;letter-spacing:.5px;margin:8px 0 0}
+.contact{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:10px 15px;border-radius:999px;text-decoration:none;color:#58657e;font-size:13px;background:rgba(255,255,255,.65);border:1px solid white;box-shadow:0 7px 22px #3d4e120f;backdrop-filter:blur(18px)}
+.tabs{display:flex;gap:8px;padding:6px;margin:7px 0 21px;border-radius:20px;background:rgba(255,255,255,.52);border:1px solid white;box-shadow:0 10px 30px #3d4e120f;backdrop-filter:blur(22px)}
+.tab{flex:1;border:0;border-radius:15px;padding:13px 8px;background:transparent;color:#7c8497;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.tab.active{color:#3443a0;background:rgba(255,255,255,.94);box-shadow:0 4px 14px #46547d1a}
+.view{display:none;animation:appear .22s ease}.view.active{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 4px 13px}
+.section-head h2{font-size:15px;margin:0;font-weight:780}.count{font-size:12px;color:var(--muted)}
+.platform-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.glass{background:var(--glass);border:1px solid var(--line);box-shadow:var(--shadow),inset 0 1px 0 white;backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%)}
+.platform{display:flex;align-items:center;gap:11px;min-width:0;padding:16px 12px;border-radius:22px;text-align:left;color:var(--ink);font:inherit;cursor:pointer;transition:transform .18s,background .18s}
+.platform:hover{transform:translateY(-2px);background:rgba(255,255,255,.9)}
+.icon{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:15px;color:white;font-size:20px;font-weight:800}
+.tiktok{background:linear-gradient(145deg,#242631,#050608)}.facebook{background:linear-gradient(145deg,#6e9cff,#2864d9)}.capcut{background:linear-gradient(145deg,#333744,#11131a)}.youtube{background:linear-gradient(145deg,#ff7979,#ed303c)}.tool{background:linear-gradient(145deg,#a9b6ff,#6e7df1)}
+.platform-text{min-width:0;flex:1}.platform-text strong{display:block;font-size:14px}.platform-text small{display:block;margin-top:4px;color:var(--muted);font-size:11px}.arrow{margin-left:auto;color:#9ba4b5;font-size:21px}
+.back{border:0;background:transparent;color:var(--accent);font:inherit;font-weight:700;font-size:13px;padding:6px 2px 17px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.page-head{display:flex;align-items:center;gap:13px;margin:0 3px 16px}.page-head h2{margin:0;font-size:21px}.page-head p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.account-list{padding:5px 13px;border-radius:23px}
+.account{display:flex;align-items:center;gap:11px;min-width:0;padding:12px 5px;color:inherit;text-decoration:none;border-top:1px solid rgba(128,143,170,.14);border-radius:12px}
+.account:first-child{border-top:0}.account:hover{background:rgba(255,255,255,.65)}
+.mini{width:37px;height:37px;flex:0 0 37px;display:grid;place-items:center;border-radius:12px;color:white;font-size:17px;font-weight:800}
+.account-info{min-width:0;flex:1}.account-info strong{display:block;font-size:13px;font-weight:750}.account-info small{display:block;margin-top:4px;color:var(--muted);font-size:11px;overflow-wrap:anywhere}
+.tool-card{display:flex;align-items:center;gap:13px;padding:18px;border-radius:22px;text-decoration:none;color:inherit}
+.tool-card strong{display:block;font-size:14px}.tool-card small{display:block;margin-top:5px;color:var(--muted);font-size:12px}
+footer{text-align:center;color:#9aa2b2;font-size:12px;padding:28px 8px 4px}
+@media(max-width:390px){body{padding:14px 11px 24px}.platform-grid{gap:9px}.platform{padding:13px 9px;gap:8px}.icon{width:39px;height:39px;flex-basis:39px;border-radius:13px}.platform-text strong{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="hero">
+<div class="avatar" aria-hidden="true">李</div>
+<h1>李文正</h1>
+<p class="subtitle">PERSONAL SPACE · SOCIAL &amp; TOOLS</p>
+<a class="contact" href="mailto:thoisam2012@gmail.com"><span>✉</span> thoisam2012@gmail.com</a>
+</header>
+<nav class="tabs" role="tablist" aria-label="Danh mục">
+<button class="tab active" type="button" data-main="social" role="tab" aria-selected="true">◉ &nbsp; Mạng xã hội</button>
+<button class="tab" type="button" data-main="tools" role="tab" aria-selected="false">✦ &nbsp; Công cụ</button>
+</nav>
+
+<section class="view active" id="social">
+<div class="section-head"><h2>Mạng xã hội</h2><span class="count">4 nền tảng</span></div>
+<div class="platform-grid">
+<button class="platform glass" type="button" data-open="tiktok-page"><span class="icon tiktok">♪</span><span class="platform-text"><strong>TikTok</strong><small>3 tài khoản</small></span><span class="arrow">›</span></button>
+<button class="platform glass" type="button" data-open="facebook-page"><span class="icon facebook">f</span><span class="platform-text"><strong>Facebook</strong><small>3 tài khoản</small></span><span class="arrow">›</span></button>
+<button class="platform glass" type="button" data-open="capcut-page"><span class="icon capcut">剪</span><span class="platform-text"><strong>CapCut</strong><small>1 tài khoản</small></span><span class="arrow">›</span></button>
+<button class="platform glass" type="button" data-open="youtube-page"><span class="icon youtube">▶</span><span class="platform-text"><strong>YouTube</strong><small>1 kênh</small></span><span class="arrow">›</span></button>
+</div>
+</section>
+
+<section class="view" id="tiktok-page" data-subpage>
+<button class="back" type="button" data-back>← <span>Quay lại mạng xã hội</span></button>
+<div class="page-head"><span class="icon tiktok">♪</span><div><h2>TikTok</h2><p>Chọn tài khoản muốn mở</p></div></div>
+<div class="account-list glass">
+<a class="account" href="https://www.tiktok.com/@tyty_99_0" target="_blank" rel="noopener noreferrer"><span class="mini tiktok">♪</span><span class="account-info"><strong>TikTok Qian Qian</strong><small>@tyty_99_0</small></span><span class="arrow">↗</span></a>
+<a class="account" href="https://www.tiktok.com/@tyty_99_4" target="_blank" rel="noopener noreferrer"><span class="mini tiktok">♪</span><span class="account-info"><strong>TikTok tôi</strong><small>@tyty_99_4</small></span><span class="arrow">↗</span></a>
+<a class="account" href="https://www.tiktok.com/@lwz_music" target="_blank" rel="noopener noreferrer"><span class="mini tiktok">♪</span><span class="account-info"><strong>TikTok tôi</strong><small>@lwz_music</small></span><span class="arrow">↗</span></a>
+</div></section>
+
+<section class="view" id="facebook-page" data-subpage>
+<button class="back" type="button" data-back>← <span>Quay lại mạng xã hội</span></button>
+<div class="page-head"><span class="icon facebook">f</span><div><h2>Facebook</h2><p>Chọn tài khoản muốn mở</p></div></div>
+<div class="account-list glass">
+<a class="account" href="https://www.facebook.com/share/1C7hQ99BDi/" target="_blank" rel="noopener noreferrer"><span class="mini facebook">f</span><span class="account-info"><strong>Facebook Qian Qian</strong><small>Trang cá nhân</small></span><span class="arrow">↗</span></a>
+<a class="account" href="https://www.facebook.com/share/1FBRk8pjCm/" target="_blank" rel="noopener noreferrer"><span class="mini facebook">f</span><span class="account-info"><strong>Facebook tôi</strong><small>Trang cá nhân</small></span><span class="arrow">↗</span></a>
+<a class="account" href="https://www.facebook.com/share/1EQv98P3Dz/" target="_blank" rel="noopener noreferrer"><span class="mini facebook">f</span><span class="account-info"><strong>Facebook tôi</strong><small>Trang cá nhân</small></span><span class="arrow">↗</span></a>
+</div></section>
+
+<section class="view" id="capcut-page" data-subpage>
+<button class="back" type="button" data-back>← <span>Quay lại mạng xã hội</span></button>
+<div class="page-head"><span class="icon capcut">剪</span><div><h2>CapCut</h2><p>Tài khoản CapCut</p></div></div>
+<div class="account-list glass">
+<a class="account" href="https://mobile.capcutshare.com/sv2/ZSgnuqyKx/" target="_blank" rel="noopener noreferrer"><span class="mini capcut">剪</span><span class="account-info"><strong>CapCut Qian Qian</strong><small>Hồ sơ CapCut</small></span><span class="arrow">↗</span></a>
+</div></section>
+
+<section class="view" id="youtube-page" data-subpage>
+<button class="back" type="button" data-back>← <span>Quay lại mạng xã hội</span></button>
+<div class="page-head"><span class="icon youtube">▶</span><div><h2>YouTube</h2><p>Kênh YouTube</p></div></div>
+<div class="account-list glass">
+<a class="account" href="https://youtube.com/@zhouyaqian1121?si=XExDtX6V43Ma3mSY" target="_blank" rel="noopener noreferrer"><span class="mini youtube">▶</span><span class="account-info"><strong>YouTube Qian Qian</strong><small>@zhouyaqian1121</small></span><span class="arrow">↗</span></a>
+</div></section>
+
+<section class="view" id="tools">
+<div class="section-head"><h2>Công cụ trực tuyến</h2><span class="count">01 công cụ</span></div>
+<a class="tool-card glass" href="https://damp-bird-f422.chinhly468.workers.dev/" target="_blank" rel="noopener noreferrer"><span class="icon tool">⇩</span><span class="platform-text"><strong>Web tải video đa nền tảng</strong><small>Mở công cụ tải video</small></span><span class="arrow">↗</span></a>
+</section>
+<footer>© <span id="year"></span> 李文正 · Made with care</footer>
+</main>
+<script>
+const views=[...document.querySelectorAll('.view')], tabs=[...document.querySelectorAll('.tab')];
+function showView(id){
+  views.forEach(v=>v.classList.toggle('active',v.id===id));
+  tabs.forEach(t=>{const active=t.dataset.main===id||(id!=='tools'&&id!=='social'&&t.dataset.main==='social');t.classList.toggle('active',active);t.setAttribute('aria-selected',String(active));});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+tabs.forEach(t=>t.addEventListener('click',()=>showView(t.dataset.main)));
+document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.open)));
+document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>showView('social')));
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
